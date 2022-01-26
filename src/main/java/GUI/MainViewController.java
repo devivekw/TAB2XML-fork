@@ -36,12 +36,29 @@ import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import utility.Range;
 import utility.Settings;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import java.io.ByteArrayInputStream;
 
 public class MainViewController extends Application {
 	
@@ -306,7 +323,7 @@ public class MainViewController extends Application {
 
 	@FXML
 	private void previewButtonHandle() throws IOException {
-//		System.out.println("Preview Button Clicked!");
+		System.out.println("Preview Button Clicked!");
 		// converter.getMusicXML() returns the MusicXML output as a String
 		
 		/*XmlDocument music = new XmlDocument();
@@ -316,16 +333,48 @@ public class MainViewController extends Application {
 		https://howtodoinjava.com/java/xml/parse-string-to-xml-dom/
 		Maybe the above links could help us?
 		*/
+//		try {
+//			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//			DocumentBuilder builder = factory.newDocumentBuilder();  
+//			Document doc = builder.parse( new InputSource( new StringReader(converter.getMusicXML()) ) ); 
+//			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//			DOMSource input = new DOMSource(doc);
+//			StreamResult output = new StreamResult(new File("preview2.fxml"));	
+//			transformer.transform(input, output);
+//			System.out.println("Document Created!");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+
 		
 		Parent root;
 		try {
+			
+//			java.io.FileWriter fw = new java.io.FileWriter("preview.fxml");
+//		    fw.write(converter.getMusicXML());
+//		    fw.close();
+//			FileWriter fw = new FileWriter(new File("preview.fxml"));
+//			fw.write("Hello");
+//		    fw.close();
+//		    System.out.println(converter.getMusicXML());
+//			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//			DocumentBuilder builder = factory.newDocumentBuilder();  
+//			Document doc = builder.parse( new InputSource( new StringReader(converter.getMusicXML()) ) ); 
+//			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//			DOMSource input = new DOMSource(doc);
+//			DOMSource input = converter.getMusicXML();
+//			StreamResult output = new StreamResult(getClass().getClassLoader().getResource("GUI/preview.fxml").getPath());	
+//			transformer.transform(input, output);
+//			System.out.println("Document Created!");
+			
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/PreviewSheetView.fxml"));
 			root = loader.load();
 			PrevSheetController controller = loader.getController();
 			controller.setMainViewController(this);
 			
 			convertWindow = this.openNewWindow(root, "Sheet music output");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Logger logger = Logger.getLogger(getClass().getName());
 			logger.log(Level.SEVERE, "Failed to create new Window.", e);
 		}
