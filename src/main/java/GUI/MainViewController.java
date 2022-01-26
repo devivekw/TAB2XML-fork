@@ -368,7 +368,7 @@ public class MainViewController extends Application {
 //			transformer.transform(input, output);
 //			System.out.println("Document Created!");
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/PreviewSheetView.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/preview2.fxml"));
 			root = loader.load();
 			PrevSheetController controller = loader.getController();
 			controller.setMainViewController(this);
