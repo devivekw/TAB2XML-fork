@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
+import javax.xml.stream.events.XMLEvent;
+
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
@@ -319,11 +321,19 @@ public class MainViewController extends Application {
 		
 		Parent root;
 		try {
+			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/PreviewSheetView.fxml"));
 			root = loader.load();
+			
 			PrevSheetController controller = loader.getController();
 			controller.setMainViewController(this);
 			
+			try {
+				controller.start(stage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			convertWindow = this.openNewWindow(root, "Sheet music output");
 		} catch (IOException e) {
 			Logger logger = Logger.getLogger(getClass().getName());
