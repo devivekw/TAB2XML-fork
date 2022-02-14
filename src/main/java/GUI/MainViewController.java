@@ -22,6 +22,7 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 
 import converter.Converter;
+import converter.Score;
 import converter.measure.TabMeasure;
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -89,6 +90,8 @@ public class MainViewController extends Application {
 		converter = new Converter(this);
 		highlighter = new Highlighter(this, converter);
     	listenforTextAreaChanges();
+    	
+    	
 	}
 
 	@FXML
@@ -327,7 +330,7 @@ public class MainViewController extends Application {
 			
 			PrevSheetController controller = loader.getController();
 			controller.setMainViewController(this);
-			
+			controller.printMusicXml();
 			try {
 				controller.start(stage);
 			} catch (Exception e) {

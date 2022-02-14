@@ -47,6 +47,7 @@ public class Score extends ScoreComponent {
     	TabMeasure.MEASURE_INDEX = 0;
     	DrumUtils.createDrumSet();
 		DrumUtils.createDrumNickNames();
+		
 		at = new AnchoredText(textInput, 0, 0);
     	detectInstrument();
         scoreTextFragments = getScoreTextFragments(at.text);
@@ -281,7 +282,7 @@ public class Score extends ScoreComponent {
         return new PartList(scoreParts);
     }
     
-	public ScorePartwise getModel() throws TXMLException {
+	public ScorePartwise getModel()  {
 	
 	    List<models.measure.Measure> measures = new ArrayList<>();
 	    for (TabMeasure tabMeasure : this.tabMeasureList) {
