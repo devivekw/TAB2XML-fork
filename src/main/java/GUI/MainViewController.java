@@ -337,6 +337,7 @@ public class MainViewController extends Application {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	
 			convertWindow = this.openNewWindow(root, "Sheet music output");
 		} catch (IOException e) {
 			Logger logger = Logger.getLogger(getClass().getName());
