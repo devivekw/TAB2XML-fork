@@ -14,6 +14,16 @@ public class Creator {
         this.type = type;
         this.name = name;
     }
+    
+    public Creator(String type) {
+        this.type = type;
+        this.name = null;
+    }
+    
+//    public Creator() {
+////        this.type = type;
+////        this.name = name;
+//    }
 
     public String getType() {
         return type;

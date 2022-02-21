@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.AnchorPane;
+//import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,22 +45,34 @@ import javafx.stage.Window;
 import utility.Range;
 import utility.Settings;
 
-import java.io.StringReader;
-import java.io.StringWriter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.*;
+//import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+//import models.part_list.*;
+import models.*;
+//import models.Identification;
+import models.measure.*;
+import models.measure.note.Note;
+import models.part_list.PartList;
 
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import java.io.ByteArrayInputStream;
-
+//import java.io.StringReader;
+//import java.io.StringWriter;
+//
+//import javax.xml.parsers.DocumentBuilder;
+//import javax.xml.parsers.DocumentBuilderFactory;
+//import javax.xml.transform.OutputKeys;
+//import javax.xml.transform.Transformer;
+//import javax.xml.transform.TransformerException;
+//import javax.xml.transform.TransformerFactory;
+//import javax.xml.transform.dom.DOMSource;
+//import javax.xml.transform.stream.StreamResult;
+//
+//import org.w3c.dom.Document;
+//import org.xml.sax.InputSource;
+//import java.io.ByteArrayInputStream;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MainViewController extends Application {
 	
 	private Preferences prefs;
@@ -320,7 +333,7 @@ public class MainViewController extends Application {
 			logger.log(Level.SEVERE, "Failed to create new Window.", e);
 		}
 	}
-
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	@FXML
 	private void previewButtonHandle() throws IOException {
 		System.out.println("Preview Button Clicked!");
@@ -368,7 +381,44 @@ public class MainViewController extends Application {
 //			transformer.transform(input, output);
 //			System.out.println("Document Created!");
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/preview2.fxml"));
+//			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/preview2.fxml"));
+			
+			XmlMapper xmlMapper = new XmlMapper();
+			note instrumentName = xmlMapper.readValue(converter.getMusicXML(), note.class);
+			System.out.println(instrumentName.getFret());
+			ScorePartwise sp = converter.getScore().getModel();
+//			ScorePartwise sp = xmlMapper.readValue(converter.getMusicXML(), ScorePartwise.class);
+			List<Part> parts = sp.getParts();
+			List<Measure> m = new ArrayList<Measure>();
+			List<Note> n = new ArrayList<Note>();
+			List<Integer> fret = new ArrayList<Integer>();
+			List<Integer> strings = new ArrayList<Integer>();
+			PartList pl = sp.getPartList();
+			System.out.println(pl.getScoreParts().get(0).getPartName());
+			
+			for(int i = 0; i < parts.size();i++) {
+				for(int j = 0; j < parts.get(i).getMeasures().size();j++) {
+					m.add(parts.get(i).getMeasures().get(i));
+				}
+			}
+			
+			for(int i = 0; i < m.size();i++) {
+				for(int j = 0; j < m.get(i).getNotesBeforeBackup().size();j++) {
+					n.add(m.get(i).getNotesAfterBackup().get(i));
+				}
+			}
+			
+			for(int i = 0; i < n.size();i++) {
+				fret.add(n.get(i).getNotations().getTechnical().getFret());
+				strings.add(n.get(i).getNotations().getTechnical().getString());
+			}
+			
+			for(int i = 0; i < n.size();i++) {
+				System.out.println(fret.get(i));
+				System.out.println(strings.get(i));
+			}
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/PreviewSheetView.fxml"));
 			root = loader.load();
 			PrevSheetController controller = loader.getController();
 			controller.setMainViewController(this);

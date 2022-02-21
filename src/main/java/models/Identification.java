@@ -1,11 +1,19 @@
 package models;
 
-public class Identification {
-    Creator creator;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+public class Identification {
+	
+	@JacksonXmlProperty(localName = "creator")
+	Creator creator;
+	
     public Identification(Creator creator) {
         this.creator = creator;
     }
+    
+//    public Identification() {
+//        
+//    }
 
     public Creator getCreator() {
         return creator;
